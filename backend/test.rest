@@ -1,0 +1,9 @@
+### Signup Test
+POST http://localhost:3003/api/auth/signup
+Content-Type: application/json
+
+{
+  "fullname": "limbu",
+  "email": "limbu@gmail.com",
+  "password": "123456789"
+}
