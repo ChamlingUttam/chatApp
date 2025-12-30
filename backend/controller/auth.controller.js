@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcrypt'
 import { generateToken } from "../utils/utils.js";
+import cloudinary from "../utils/cloudinary.js";
 
 
 export const signup = async (req,res)=>{
@@ -54,8 +55,78 @@ export const signup = async (req,res)=>{
 
 export const login = async (req,res)=>{
     
+    const {email,password} = req.body
+
+    try {
+
+        if(!email || !password){
+            return res.status(400).json("please fill the field")
+        }
+
+        const existUser = await User.findOne({email})
+
+        if(!existUser){
+            return res.status(400).json("invalid cridential")
+        }
+
+        const checkPassword = await bcrypt.compare(password,existUser.password)
+
+        if(!checkPassword){
+            return res.status(400).json("invalid crediential")
+        }
+        
+    
+        generateToken(existUser._id,res)
+
+        res.status(200).json({
+            _id : existUser._id,
+            fullname:existUser.fullname,
+            email:existUser.email,
+            profilePic:existUser.profilePic,
+
+        })
+
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
 }
 
 export const logout = async (req,res)=>{
+    res.cookie("jwt","",{
+        maxAge:0
+    })
+
+    res.status(200).json({message:"logout sucessfully"})
+}
+
+
+export const updateProfile = async (req,res)=>{
+
+    const {profilePic} = req.body
+try {
     
+    const userId = req.user._id
+
+    if(!profilePic){
+        return res.status(400).json("pic is required")
+    }
+
+    //this only store in cloudinary container not inour database
+    const uploadResponse = await cloudinary.uploader.upload(profilePic)
+
+    //so this line is code to store in our database
+    const updateUser = await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.secure_url},{new:true})
+
+    res.status(200).json(updateUser)
+} catch (error) {
+    res.status(500).json({message:error.message})
+}
+}
+
+export const checkAuth = async (req,res)=>{
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
 }
