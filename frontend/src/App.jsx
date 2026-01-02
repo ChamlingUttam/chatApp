@@ -35,20 +35,20 @@ const App = () => {
     <Navbar/>
 
     <Routes>
-        {/* <Route path='/' element={authUser ? <HomePage/> : <Navigate to={"/login"}/>}/>
+        <Route path='/' element={authUser ? <HomePage/> : <Navigate to={"/login"}/>}/>
         <Route path='/signup' element={ !authUser ? <SignUpPage/> : <Navigate to={"/"}/>}/>
         <Route path='/login' element={ !authUser ? <LogInPage/> : <Navigate to={"/"}/>}/>
         <Route path='/profile' element={ authUser ? <ProfilePage/> : <Navigate to={"/login"}/>}/>
-        <Route path='/setting' element={<SettingPage/>}/> */}
+        <Route path='/setting' element={<SettingPage/>}/>
 
 
 
 
-        <Route path='/' element={ <HomePage/>  }/>
+        {/* <Route path='/' element={ <HomePage/>  }/>
         <Route path='/signup' element={  <SignUpPage/> }/>
         <Route path='/login' element={ <LogInPage/> }/>
         <Route path='/profile' element={  <ProfilePage/> }/>
-        <Route path='/setting' element={<SettingPage/>}/>
+        <Route path='/setting' element={<SettingPage/>}/> */}
 
 
         
