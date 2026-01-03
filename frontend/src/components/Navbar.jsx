@@ -6,7 +6,7 @@ const Navbar = () => {
   const { authUser, logout } = useAuthStore();
 
   return (
-    <nav className="w-full px-6 py-4 bg-base-100 shadow-md">
+   <nav className="fixed top-0 left-0 w-full px-6 py-4 bg-base-100 shadow-md z-50">
       <div className="flex items-center justify-between">
 
         {/* LEFT */}
@@ -21,7 +21,7 @@ const Navbar = () => {
         {/* RIGHT */}
         <div className="flex items-center gap-6">
 
-          {/* Settings - ALWAYS visible */}
+          {/* Settings - ALWAYS visible  */}
           <Link
             to="/setting"
             className="flex items-center gap-2 cursor-pointer hover:text-primary transition"
