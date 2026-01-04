@@ -56,7 +56,7 @@ export const sendMessages = async(req,res)=>{
             imageUrl = uploadResponse
         }
         
-        const newMessage = new message ({
+        const newMessage = new Message ({
             text,
             receiverId,
             senderId,
