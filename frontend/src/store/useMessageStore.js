@@ -1,0 +1,41 @@
+import { axiosInstance } from "../lib/axios";
+import { create } from "zustand";
+import toast from "react-hot-toast";
+import { User } from "lucide-react";
+
+export const useChatStore = create((set)=>({
+    messages:[],
+    users:[],
+    selectedUser:null,
+    isUsersLoading:false,
+    isMessageLoading:false,
+    //this is for loading the user that we have start chating
+    getUser:async()=>{
+        set({isUsersLoading:true})
+
+        try {
+            const res = await axiosInstance.get('/message/users')
+            set({users:res.data})
+        } catch (error) {
+            toast.error(error.response.data.message || "something went wrong")
+        }finally{
+            set({isUsersLoading:false})
+        }
+    },
+
+
+    getMessages : async(userId)=>{
+        try {
+            const res = await axiosInstance.get(`/message/${userId}`)
+            set({messages:res.data})
+            
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }finally{
+            set({isUsersLoading:false})
+        }
+    },
+
+    setSelectedUser: (selectedUser) =>set({selectedUser}),
+
+}))
