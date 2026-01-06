@@ -33,16 +33,15 @@
 
 
 
-
-import express from "express";
 import "dotenv/config";
 import { dbConnnect } from "./config/db.js";
 import authRoute from "./routes/auth.route.js";
 import messageRoute from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { app, server } from "./utils/socket.js";
+import express from 'express'
 
-const app = express();
 const PORT = process.env.PORT || 3003;
 
 /* ✅ CORS */
@@ -66,6 +65,6 @@ app.use("/api/message", messageRoute);
 
 dbConnnect();
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

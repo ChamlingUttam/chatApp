@@ -5,17 +5,21 @@ import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 import avatar from '../img/avatar.png'
 import { Sandwich, Users } from "lucide-react";
 import { useChatStore } from "../store/useMessageStore";
+import { useState } from "react";
 
 const Sidebar = () => {
   const {  getUser, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
 
   const {onlineUsers }= useAuthStore()
-  // const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+  const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+
+
 
   useEffect(() => {
     getUser();
   }, [getUser]);
 
+  const filterUsers = showOnlineOnly ? users.filter(user=>onlineUsers.includes(user._id)) : users
   
 
   if (isUsersLoading) return <SidebarSkeleton />;
@@ -28,7 +32,7 @@ const Sidebar = () => {
           <span className="font-medium hidden lg:block">Contacts</span>
         </div>
         {/* TODO: Online filter toggle */}
-        {/* <div className="mt-3 hidden lg:flex items-center gap-2">
+        <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
@@ -39,11 +43,11 @@ const Sidebar = () => {
             <span className="text-sm">Show online only</span>
           </label>
           <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
-        </div> */}
+        </div>
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-       {users.map((user)=>(
+       {filterUsers.map((user)=>(
         <button key={user._id} onClick={()=>setSelectedUser(user)}  className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
@@ -54,7 +58,7 @@ const Sidebar = () => {
                 <img src={user.profilePic || avatar} alt={user.fullname} className="size-12 object-cover rounded-full" />
 
                 {onlineUsers.includes(user._id)&&(
-                  <span className="absolute bottom-0 right-0 bg-green-500 rounded-full ring-2 ring-zinc-900"/>
+                  <span className="absolute bottom-0 size-3 right-0 bg-green-500 rounded-full ring-2 ring-zinc-900"/>
                 )}
 
               </div>
@@ -73,3 +77,17 @@ const Sidebar = () => {
   );
 };
 export default Sidebar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
